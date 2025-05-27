@@ -34,7 +34,7 @@ class DriverLicenseUpdateForm(DriverLicenceMixin, forms.ModelForm):
 
 class CarCreationForm(forms.ModelForm):
     drivers = models.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
         required=False
     )
