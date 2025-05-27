@@ -82,33 +82,36 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = get_user_model()
+    model = Driver
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = get_user_model()
+    model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = get_user_model()
+    model = Driver
     form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class LicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = get_user_model()
-    success_url = reverse_lazy("taxi:driver-list")
+class DriverLicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
     form_class = DriverLicenseUpdateForm
 
     def get_success_url(self):
-        return reverse_lazy('taxi:driver-detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = get_user_model()
+    model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
 
 class CarDriverViewToggle(LoginRequiredMixin, View):
     @staticmethod
@@ -119,4 +122,4 @@ class CarDriverViewToggle(LoginRequiredMixin, View):
             car.drivers.remove(user)
         else:
             car.drivers.add(user)
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect(request.META.get("HTTP_REFERER", "/"))

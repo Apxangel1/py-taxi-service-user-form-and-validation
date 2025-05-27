@@ -19,21 +19,24 @@ class DriverLicenceMixin(forms.Form):
         ]
     )
 
+
 class DriverCreationForm(DriverLicenceMixin, UserCreationForm):
     class Meta:
         model = Driver
         fields = UserCreationForm.Meta.fields + ("license_number",)
+
 
 class DriverLicenseUpdateForm(DriverLicenceMixin, forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
 
+
 class CarCreationForm(forms.ModelForm):
     drivers = models.ModelMultipleChoiceField(
-        queryset = get_user_model().objects.all(),
-        widget = forms.CheckboxSelectMultiple,
-        required = False
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=False
     )
 
     class Meta:
